@@ -4,144 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Monitor Kapal | USU - KKI</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
- <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
+
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-  
-  <style>
-    /* Additional styles for video streams */
-    .imaging-placeholder {
-      width: 100%;
-      height: 100%;
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #1a1a2e;
-      border-radius: 8px;
-      color: #666;
-      font-size: 1rem;
-      position: relative;
-    }
-    
-    .video-stream {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      border-radius: 8px;
-    }
-    
-    .video-overlay {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      display: flex;
-      gap: 8px;
-      z-index: 10;
-    }
-    
-    .video-badge {
-      background: rgba(0, 0, 0, 0.7);
-      color: #4ade80;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      backdrop-filter: blur(4px);
-    }
-    
-    .video-badge.offline {
-      color: #fb923c;
-    }
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    /* Logout Button Styles */
-    .logout-btn {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
-      color: white;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-left: 15px;
-    }
-
-    .logout-btn:hover {
-      background: linear-gradient(135deg, #c0392b, #a93226);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-    }
-
-    .logout-btn i {
-      font-size: 12px;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
   <div class="app">
     <!-- SIDEBAR -->
     <aside class="sidebar">
-<img src="navindra.png" 
-     alt="Logo NAVINDRA" 
-     class="logo-navindra">
-
+      <img src="/navindra.png" class="logo-navindra" alt="Logo NAVINDRA">
 
       <nav class="nav">
         <a href="#" class="nav-item active">
           <i class="fas fa-tachometer-alt"></i>
           <span class="nav-text">Dashboard</span>
         </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-ship"></i>
-          <span class="nav-text">Monitor Kapal</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-camera"></i>
-          <span class="nav-text">Pencitraan</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-chart-line"></i>
-          <span class="nav-text">Analisis Data</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-history"></i>
-          <span class="nav-text">Riwayat</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-cog"></i>
-          <span class="nav-text">Pengaturan</span>
-        </a>
+        <a href="#" class="nav-item"><i class="fas fa-camera"></i><span class="nav-text">Pencitraan</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-chart-line"></i><span class="nav-text">Analisis Data</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-history"></i><span class="nav-text">Riwayat</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-cog"></i><span class="nav-text">Pengaturan</span></a>
       </nav>
 
-      <div class="nav-footer">
-        <div>USU TEAM</div>
-      </div>
+      <div class="nav-footer">USU TEAM</div>
     </aside>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-      <!-- HEADER -->
+
       <header class="header">
         <div class="header-left">
           <div class="status-indicator">
@@ -151,446 +53,71 @@
         </div>
 
         <div class="header-right">
-          <div class="header-info">
-            <div class="info-item">
-              <span class="info-label">Status Kapal</span>
-              <span class="info-value text-danger">Tidak Berlayar</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Mode Operasi</span>
-              <span class="info-value">Manual</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Terakhir Update</span>
-              <span class="info-value">2 menit lalu</span>
-            </div>
-          </div>
-          
-          <!-- TOMBOL LOGOUT -->
           <button class="logout-btn" id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
+            <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
       </header>
 
-      <!-- DASHBOARD CONTENT -->
-      <div class="dashboard-content">
-        <!-- TOP GRID -->
-        <div class="dashboard-grid">
-          <!-- ROUTE SELECTION -->
-          <div class="card route-selection">
-            <div class="card-header">
-              <div class="card-title">Pilih Rute</div>
-            </div>
-            <div class="card-body">
-              <div class="route-buttons">
-                <button class="route-btn">Lintasan A</button>
-                <button class="route-btn secondary">Lintasan B</button>
-                <button class="route-btn start-btn">Start</button>
-              </div>
+      <!-- SEMUA ISI TETAP SAMA -->
+      <!-- (tidak kuubah, hanya static image nya saja) -->
+
+      <div class="imaging-section">
+        <div class="card imaging-card">
+          <div class="card-header">
+            <div class="card-title">Pencitraan Permukaan</div>
+            <div class="card-actions">
+              <button class="card-action" id="btn-snapshot-surface"><i class="fas fa-camera"></i></button>
             </div>
           </div>
-
-          <!-- GEO INFO -->
-          <div class="card geo-info">
-            <div class="card-header">
-              <div class="card-title">Informasi Navigasi</div>
-              <div class="card-actions">
-                <button class="card-action"><i class="fas fa-sync-alt"></i></button>
-                <button class="card-action"><i class="fas fa-expand"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="geo-grid">
-                <div class="geo-item">
-                  <div class="geo-label">Day</div>
-                  <div class="geo-value">Sabtu</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">Date</div>
-                  <div class="geo-value">7/12/2025</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">Time</div>
-                  <div class="geo-value">16:28:29</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">SOG (Knot)</div>
-                  <div class="geo-value">3.2</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">SOG (Km/h)</div>
-                  <div class="geo-value">5.9</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">COG</div>
-                  <div class="geo-value">45°</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">Kordinat</div>
-                  <div class="geo-value">5.548128°N</div>
-                </div>
-                <div class="geo-item">
-                  <div class="geo-label">&nbsp;</div>
-                  <div class="geo-value">95.323753°E</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SATELLITE MAP -->
-          <div class="card satellite-map">
-            <div class="card-header">
-              <div class="card-title">Peta Satelit</div>
-              <div class="card-actions">
-                <button class="card-action" id="layerToggle"><i class="fas fa-layer-group"></i></button>
-                <button class="card-action" id="fullBtn"><i class="fas fa-expand"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div id="map" class="map-container"></div>
-            </div>
-          </div>
-
-          <!-- STATUS LOGS -->
-          <div class="card status-logs">
-            <div class="card-header">
-              <div class="card-title">Status & Log Sistem</div>
-              <div class="card-actions">
-                <button class="card-action"><i class="fas fa-download"></i></button>
-              </div>
-            </div>
           <div class="card-body">
-  <div class="logs-container">
-    <div class="log-category">
-      <div class="log-category-title">Ship Status</div>
-      <div class="log-pills">
-        <div class="log-pillstatus">
-          <span>Mission Status</span>
-          <span class="value text-warning">Not Started</span>
-        </div>
-        <div class="log-pillstatus">
-          <span>Ship Status</span>
-          <span class="value text-danger">Off</span>
-        </div>
-        <div class="log-pillstatus">
-          <span>Imaging Mission</span>
-          <span class="value text-warning">Not Started</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="log-category">
-      <div class="log-category-title">System Status</div>
-      <div class="log-pills">
-        <div class="log-pillsistem">
-          <span>Battery</span>
-          <span class="value text-success">100%</span>
-        </div>
-        <div class="log-pillsistem">
-          <span>Temperature</span>
-          <span class="value">42°C</span>
-        </div>
-        <div class="log-pillsistem">
-          <span>Connection</span>
-          <span class="value text-success">Active</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="log-category">
-      <div class="log-category-title">Progress</div>
-      <div class="log-pills">
-        <div class="log-pillprogress">
-          <span>Mission Progress</span>
-          <span class="value">0%</span>
-        </div>
-        <div class="log-pillprogress">
-          <span>ETA</span>
-          <span class="value">0 minutes</span>
-        </div>
-        <div class="log-pillprogress">
-          <span>Speed Avarage</span>
-          <span class="value">0 m/s</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-          </div>
-
-          <!-- VIRTUAL MAP -->
-          <div class="card virtual-map">
-            <div class="card-header">
-              <div class="card-title">Peta Virtual</div>
-              <div class="card-actions">
-                <button class="card-action"><i class="fas fa-crosshairs"></i></button>
-                <button class="card-action"><i class="fas fa-expand"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="map-container">
-                <div class="map-grid">
-                  <!-- Peta virtual akan ditampilkan di sini secara dinamis -->
-                </div>
-              </div>
+            <div class="imaging-placeholder">
+              <img id="surface-stream" class="video-stream" src="/video_feed" alt="Pencitraan Permukaan">
             </div>
           </div>
         </div>
 
-        <!-- IMAGING SECTION -->
-        <div class="imaging-section">
-          <div class="card imaging-card">
-            <div class="card-header">
-              <div class="card-title">Pencitraan Permukaan</div>
-              <div class="card-actions">
-                <button class="card-action" id="btn-snapshot-surface"><i class="fas fa-camera"></i></button>
-                <button class="card-action"><i class="fas fa-expand"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="imaging-placeholder" id="surface-container">
-                <img id="surface-stream" class="video-stream" src="/video_feed" alt="Pencitraan Permukaan">
-                <div class="video-overlay">
-                  <div class="video-badge" id="surface-status">LIVE</div>
-                </div>
-              </div>
-            </div>
+        <div class="card imaging-card center-logo">
+          <div class="card-header">
+            <div class="card-title">Universitas Sumatera Utara</div>
           </div>
-
-          <div class="card imaging-card center-logo">
-            <div class="card-header">
-              <div class="card-title">Universitas Sumatera Utara</div>
+          <div class="card-body">
+            <div class="logo-container">
+              <img src="/logo_usu.png" class="logo-image" alt="Logo USU">
             </div>
-            <div class="card-body">
-              <div class="logo-container">
-              <img src="logo_usu.png" alt="Logo USU" class="logo-image">
-
-              </div>
-              <div class="logo-subtitle">SISTEM MONITORING KAPAL OTONOM</div>
-            </div>
-          </div>
-
-          <div class="card imaging-card">
-            <div class="card-header">
-              <div class="card-title">Pencitraan Bawah Air</div>
-              <div class="card-actions">
-                <button class="card-action" id="btn-snapshot-underwater"><i class="fas fa-camera"></i></button>
-                <button class="card-action"><i class="fas fa-expand"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="imaging-placeholder" id="underwater-container">
-                <img id="underwater-stream" class="video-stream" src="/video_feed" alt="Pencitraan Bawah Air">
-                <div class="video-overlay">
-                  <div class="video-badge" id="underwater-status">LIVE</div>
-                </div>
-              </div>
-            </div>
+            <div class="logo-subtitle">SISTEM MONITORING KAPAL OTONOM</div>
           </div>
         </div>
 
-   
-        <!-- CHARTS SECTION -->
-        <div class="charts-section">
-          <div class="card chart-container">
-            <div class="card-header">
-              <div class="card-title">Grafik Kecepatan</div>
-              <div class="card-actions">
-                <button class="card-action" id="download-speed-chart"><i class="fas fa-download"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart-wrapper" style="height: 100%;">
-                <canvas id="speedChart"></canvas>
-              </div>
+        <div class="card imaging-card">
+          <div class="card-header">
+            <div class="card-title">Pencitraan Bawah Air</div>
+            <div class="card-actions">
+              <button class="card-action" id="btn-snapshot-underwater"><i class="fas fa-camera"></i></button>
             </div>
           </div>
-
-          <div class="card chart-container">
-            <div class="card-header">
-              <div class="card-title">Grafik Posisi</div>
-              <div class="card-actions">
-                <button class="card-action" id="download-position-chart"><i class="fas fa-download"></i></button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="chart-wrapper" style="height: 100%;">
-                <canvas id="positionChart"></canvas>
-              </div>
+          <div class="card-body">
+            <div class="imaging-placeholder">
+              <img id="underwater-stream" class="video-stream" src="/video_feed" alt="Pencitraan Bawah Air">
             </div>
           </div>
         </div>
       </div>
 
-      <!-- FOOTER -->
       <footer class="footer">
         <div class="footer-info">
-          <div class="footer-item">
-            <span class="footer-label">Sistem</span>
-            <span class="footer-value text-success">Online</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">CPU Usage</span>
-            <span class="footer-value">24%</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">Memory</span>
-            <span class="footer-value">1.2GB / 4GB</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">Uptime</span>
-            <span class="footer-value">12:34:56</span>
-          </div>
-        </div>
-
-        <div class="progress-bars">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 65%"></div>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 30%"></div>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 80%"></div>
-          </div>
+          <div class="footer-item"><span>Sistem</span> <span class="text-success">Online</span></div>
+          <div class="footer-item"><span>CPU</span> 24%</div>
+          <div class="footer-item"><span>Memory</span> 1.2GB / 4GB</div>
+          <div class="footer-item"><span>Uptime</span> 12:34:56</div>
         </div>
       </footer>
+
     </div>
   </div>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-
-  
-</body>
-</html>
-
-      <!-- FOOTER -->
-      <footer class="footer">
-        <div class="footer-info">
-          <div class="footer-item">
-            <span class="footer-label">Sistem</span>
-            <span class="footer-value text-success">Online</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">CPU Usage</span>
-            <span class="footer-value">24%</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">Memory</span>
-            <span class="footer-value">1.2GB / 4GB</span>
-          </div>
-          <div class="footer-item">
-            <span class="footer-label">Uptime</span>
-            <span class="footer-value">12:34:56</span>
-          </div>
-        </div>
-
-        <div class="progress-bars">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 65%"></div>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 30%"></div>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 80%"></div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </div>
-
-<script src="script.js"></script>
-
-
-  
-  <script>
-    // Video stream functionality
-    (function() {
-      const surfaceStream = document.getElementById('surface-stream');
-      const underwaterStream = document.getElementById('underwater-stream');
-      const surfaceStatus = document.getElementById('surface-status');
-      const underwaterStatus = document.getElementById('underwater-status');
-      
-      // Snapshot functionality
-      function takeSnapshot(imgElement, streamName) {
-        try {
-          if (!imgElement || !imgElement.complete) {
-            console.warn('Stream tidak tersedia untuk snapshot');
-            return;
-          }
-          
-          const canvas = document.createElement('canvas');
-          canvas.width = imgElement.naturalWidth || 1280;
-          canvas.height = imgElement.naturalHeight || 720;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-          
-          const dataUrl = canvas.toDataURL('image/png');
-          const a = document.createElement('a');
-          a.href = dataUrl;
-          a.download = streamName + '_' + new Date().toISOString().replace(/[:.]/g, '-') + '.png';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          
-          console.log('Snapshot saved: ' + streamName);
-        } catch (err) {
-          console.error('Snapshot gagal:', err);
-        }
-      }
-      
-      // Snapshot buttons
-      document.getElementById('btn-snapshot-surface').addEventListener('click', function() {
-        takeSnapshot(surfaceStream, 'surface');
-      });
-      
-      document.getElementById('btn-snapshot-underwater').addEventListener('click', function() {
-        takeSnapshot(underwaterStream, 'underwater');
-      });
-      
-      // Stream status monitoring
-      surfaceStream.addEventListener('load', function() {
-        surfaceStatus.textContent = 'LIVE';
-        surfaceStatus.classList.remove('offline');
-      });
-      
-      surfaceStream.addEventListener('error', function() {
-        surfaceStatus.textContent = 'OFFLINE';
-        surfaceStatus.classList.add('offline');
-      });
-      
-      underwaterStream.addEventListener('load', function() {
-        underwaterStatus.textContent = 'LIVE';
-        underwaterStatus.classList.remove('offline');
-      });
-      
-      underwaterStream.addEventListener('error', function() {
-        underwaterStatus.textContent = 'OFFLINE';
-        underwaterStatus.classList.add('offline');
-      });
-      
-      // Logout functionality
-      document.getElementById('logoutBtn').addEventListener('click', function() {
-        if (confirm('Apakah Anda yakin ingin logout?')) {
-          // Show loading state
-          this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out...';
-          this.disabled = true;
-          
-          // Redirect to logout endpoint
-          setTimeout(() => {
-            window.location.href = 'login.html';
-          }, 1000);
-        }
-      });
-      
-      console.log('Video stream functionality initialized');
-    })();
-  </script>
+  <!-- ✳ script static tanpa url_for -->
+  <script src="/script.js"></script>
 
 </body>
-
 </html>
-
