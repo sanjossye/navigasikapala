@@ -391,19 +391,19 @@
           </div>
         </div>
 
+   
         <!-- CHARTS SECTION -->
         <div class="charts-section">
           <div class="card chart-container">
             <div class="card-header">
               <div class="card-title">Grafik Kecepatan</div>
               <div class="card-actions">
-                <button class="card-action"><i class="fas fa-download"></i></button>
+                <button class="card-action" id="download-speed-chart"><i class="fas fa-download"></i></button>
               </div>
             </div>
             <div class="card-body">
-              <div class="chart-placeholder">
-                <i class="fas fa-chart-line" style="font-size: 24px; margin-right: 10px;"></i>
-                Grafik Kecepatan vs Waktu
+              <div class="chart-wrapper" style="height: 100%;">
+                <canvas id="speedChart"></canvas>
               </div>
             </div>
           </div>
@@ -412,18 +412,59 @@
             <div class="card-header">
               <div class="card-title">Grafik Posisi</div>
               <div class="card-actions">
-                <button class="card-action"><i class="fas fa-download"></i></button>
+                <button class="card-action" id="download-position-chart"><i class="fas fa-download"></i></button>
               </div>
             </div>
             <div class="card-body">
-              <div class="chart-placeholder">
-                <i class="fas fa-map" style="font-size: 24px; margin-right: 10px;"></i>
-                Trajektori Posisi Kapal
+              <div class="chart-wrapper" style="height: 100%;">
+                <canvas id="positionChart"></canvas>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-info">
+          <div class="footer-item">
+            <span class="footer-label">Sistem</span>
+            <span class="footer-value text-success">Online</span>
+          </div>
+          <div class="footer-item">
+            <span class="footer-label">CPU Usage</span>
+            <span class="footer-value">24%</span>
+          </div>
+          <div class="footer-item">
+            <span class="footer-label">Memory</span>
+            <span class="footer-value">1.2GB / 4GB</span>
+          </div>
+          <div class="footer-item">
+            <span class="footer-label">Uptime</span>
+            <span class="footer-value">12:34:56</span>
+          </div>
+        </div>
+
+        <div class="progress-bars">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%"></div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 80%"></div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  
+</body>
+</html>
 
       <!-- FOOTER -->
       <footer class="footer">
@@ -552,3 +593,4 @@
 </body>
 
 </html>
+
