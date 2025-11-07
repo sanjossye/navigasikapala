@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akses Sistem Monitoring | NAVINDRA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== VARIABLES & RESET ===== */
+    :root {
+      --primary: #0a0e27;
+      --secondary: #0f1419;
+      --card-bg: #131920;
+      --card-border: rgba(41, 128, 185, 0.15);
+      --text-primary: #e8f1f8;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-blue: #2980b9;
+      --accent-orange: #e67e22;
+      --accent-green: #27ae60;
+      --accent-light: #3498db;
+      --danger: #e74c3c;
+      --glow-blue: rgba(41, 128, 185, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-primary);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== VIDEO BACKGROUND ===== */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a1f35 0%, #0f1419 100%);
+    }
+
+    .video-background video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.4) contrast(1.2);
+    }
+
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg, 
+        rgba(102, 103, 110, 0.85) 0%, 
+        rgba(20, 27, 45, 0.8) 20%, 
+        rgba(26, 31, 53, 0.9) 80%
+      );
+      z-index: -1;
+    }
+
+    /* ===== ANIMATED BACKGROUND ===== */
+    .access-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .background-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 15% 85%, rgba(41, 128, 185, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, rgba(230, 126, 34, 0.06) 0%, transparent 40%);
+      animation: breathe 10s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.05); }
+    }
+
+    .background-animation::before,
+    .background-animation::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: float 15s ease-in-out infinite;
+    }
+
+    .background-animation::before {
+      top: 10%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(41, 128, 185, 0.15) 0%, transparent 70%);
+      animation-delay: -5s;
+    }
+
+    .background-animation::after {
+      bottom: 10%;
+      right: -10%;
+      background: radial-gradient(circle, rgba(230, 126, 34, 0.12) 0%, transparent 70%);
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, -50px) scale(1.1); }
+      66% { transform: translate(-30px, 30px) scale(0.9); }
+    }
+
+    /* ===== ACCESS CARD ===== */
+    .access-card {
+      background: linear-gradient(145deg, rgba(19, 25, 32, 0.95), rgba(15, 20, 25, 0.98));
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(41, 128, 185, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      position: relative;
+      z-index: 10;
+      animation: slideUp 0.6s ease-out;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .access-card.pin-mode {
+      max-width: 450px;
+      padding: 32px 28px;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .access-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-orange), var(--accent-green));
+      border-radius: 24px;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+      filter: blur(10px);
+    }
+
+    .access-card:hover::before {
+      opacity: 0.3;
+    }
+
+    /* ===== LOGO ===== */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+      animation: fadeInLogo 0.8s ease-out 0.2s both;
+      margin-top: -100px;
+      transition: all 0.4s ease;
+    }
+
+    .access-card.pin-mode .logo-container {
+      margin-top: -60px;
+      margin-bottom: 20px;
+    }
+
+    @keyframes fadeInLogo {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .logo-navindra-login {
+      width: 280px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 8px 16px rgba(41, 128, 185, 0.3));
+      transition: all 0.4s ease;
+    }
+
+    .access-card.pin-mode .logo-navindra-login {
+      width: 200px;
+    }
+
+    .logo-navindra-login:hover {
+      transform: scale(1.05) translateY(-4px);
+      filter: drop-shadow(0 12px 24px rgba(41, 128, 185, 0.5));
+    }
+
+    /* ===== CARD HEADER ===== */
+    .card-header {
+      text-align: center;
+      margin-bottom: 36px;
+      transition: all 0.4s ease;
+    }
+
+    .access-card.pin-mode .card-header {
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 65px;
+      background: linear-gradient(135deg, #e8f1f8 0%, #3498db 50%, #27ae60 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+      animation: fadeIn 0.8s ease-out 0.4s both;
+      margin-top: -50px;
+      transition: all 0.4s ease;
+    }
+
+    .access-card.pin-mode .card-title {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-subtitle {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 360px;
+      margin: -85px auto 30px;
+      animation: fadeIn 0.8s ease-out 0.5s both;
+      transition: all 0.4s ease;
+    }
+
+    .access-card.pin-mode .card-subtitle {
+      margin-top: -30px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    /* ===== ACCESS METHODS ===== */
+    .access-methods {
+      display: flex;
+      gap: 12px;
+      margin: 24px 0;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      animation: fadeIn 0.8s ease-out 0.6s both;
+    }
+
+    .access-card.pin-mode .access-methods {
+      margin: 16px 0;
+      padding: 4px;
+    }
+
+    .method-btn {
+      flex: 1;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 14px 20px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .access-card.pin-mode .method-btn {
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+
+    .method-btn:hover {
+      color: var(--text-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(41, 128, 185, 0.2);
+    }
+
+    .method-btn.active {
+      background: linear-gradient(135deg, rgba(41, 128, 185, 0.15), rgba(52, 152, 219, 0.1));
+      border-color: var(--accent-blue);
+      color: var(--accent-light);
+      box-shadow: 0 0 20px rgba(41, 128, 185, 0.3);
+    }
+
+    .method-btn i {
+      margin-right: 6px;
+    }
+
+    /* ===== FORM ELEMENTS ===== */
+    .access-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeIn 0.8s ease-out 0.7s both;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s ease;
+    }
+
+    #codeGroup {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .form-label {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .access-card.pin-mode .form-label {
+      font-size: 13px;
+    }
+
+    .access-input {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid rgba(41, 128, 185, 0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .access-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 
+        0 0 0 4px rgba(41, 128, 185, 0.1),
+        0 8px 16px rgba(41, 128, 185, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .access-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* ===== PIN INTERFACE ===== */
+    .pin-container {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+    }
+
+    .pin-container.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .access-card.pin-mode .pin-container {
+      gap: 12px;
+    }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 12px 0 16px;
+    }
+
+    .access-card.pin-mode .pin-display {
+      gap: 16px;
+      margin: 10px 0 14px;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(41, 128, 185, 0.3);
+      background: transparent;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .access-card.pin-mode .pin-dot {
+      width: 15px;
+      height: 15px;
+      border-width: 2.5px;
+    }
+
+    .pin-dot.filled {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      box-shadow: 
+        0 0 16px var(--glow-blue),
+        0 0 6px rgba(41, 128, 185, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      animation: pinFill 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes pinFill {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .access-card.pin-mode .pin-keypad {
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .pin-key {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(41, 128, 185, 0.15);
+      border-radius: 12px;
+      padding: 18px;
+      color: var(--text-primary);
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .access-card.pin-mode .pin-key {
+      padding: 14px;
+      font-size: 18px;
+      border-radius: 10px;
+    }
+
+    .pin-key:hover {
+      background: linear-gradient(145deg, rgba(41, 128, 185, 0.18), rgba(52, 152, 219, 0.12));
+      border-color: var(--accent-blue);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 
+        0 8px 20px rgba(41, 128, 185, 0.3),
+        0 0 20px rgba(41, 128, 185, 0.2);
+    }
+
+    .pin-key:active {
+      transform: translateY(0) scale(0.96);
+      transition: all 0.1s ease;
+    }
+
+    .pin-key.clear {
+      background: linear-gradient(145deg, rgba(231, 76, 60, 0.12), rgba(231, 76, 60, 0.08));
+      border-color: rgba(231, 76, 60, 0.3);
+      color: var(--danger);
+    }
+
+    .pin-key.clear:hover {
+      background: linear-gradient(145deg, rgba(231, 76, 60, 0.22), rgba(231, 76, 60, 0.16));
+      border-color: var(--danger);
+      box-shadow: 
+        0 8px 20px rgba(231, 76, 60, 0.3),
+        0 0 20px rgba(231, 76, 60, 0.2);
+    }
+
+    /* ===== BUTTONS ===== */
+    .access-btn {
+      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-light) 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 18px 24px;
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(41, 128, 185, 0.35);
+      letter-spacing: 0.5px;
+    }
+
+    .access-card.pin-mode .access-btn {
+      padding: 14px 20px;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .access-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(41, 128, 185, 0.5);
+    }
+
+    .access-btn:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    .access-btn:disabled {
+      background: linear-gradient(135deg, #475569, #334155);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.6;
+    }
+
+    .access-btn i {
+      margin-right: 8px;
+    }
+
+    /* ===== STATUS MESSAGE ===== */
+    .status-message {
+      text-align: center;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      margin-top: 16px;
+      display: none;
+      font-weight: 500;
+      animation: slideDown 0.3s ease;
+    }
+
+    .access-card.pin-mode .status-message {
+      padding: 10px 16px;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-message.error {
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(231, 76, 60, 0.1));
+      color: #ff6b6b;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      display: block;
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+    }
+
+    .status-message.success {
+      background: linear-gradient(135deg, rgba(39, 174, 96, 0.15), rgba(39, 174, 96, 0.1));
+      color: #51cf66;
+      border: 1px solid rgba(39, 174, 96, 0.3);
+      display: block;
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
+    }
+
+    /* ===== FOOTER ===== */
+    .access-footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(41, 128, 185, 0.1);
+      color: var(--text-muted);
+      font-size: 13px;
+      animation: fadeIn 0.8s ease-out 0.8s both;
+    }
+
+    .access-card.pin-mode .access-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      font-size: 12px;
+    }
+
+    .emergency-access {
+      margin-top: 16px;
+    }
+
+    .access-card.pin-mode .emergency-access {
+      margin-top: 12px;
+    }
+
+    .emergency-btn {
+      background: transparent;
+      border: 1.5px solid rgba(231, 76, 60, 0.3);
+      color: var(--danger);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .access-card.pin-mode .emergency-btn {
+      padding: 8px 14px;
+      font-size: 12px;
+    }
+
+    .emergency-btn:hover {
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.12), rgba(231, 76, 60, 0.08));
+      border-color: var(--danger);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+    }
+
+    .emergency-btn i {
+      margin-right: 6px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .access-card {
+        padding: 36px 28px;
+        margin: 12px;
+        border-radius: 20px;
+      }
+
+      .access-card.pin-mode {
+        padding: 28px 24px;
+        max-width: 360px;
+      }
+      
+      .logo-navindra-login {
+        width: 220px;
+      }
+
+      .access-card.pin-mode .logo-navindra-login {
+        width: 160px;
+      }
+
+      .card-title {
+        font-size: 26px;
+        margin-bottom: 20px;
+      }
+
+      .card-subtitle {
+        font-size: 14px;
+      }
+
+      .access-card.pin-mode .card-subtitle {
+        font-size: 13px;
+      }
+
+      .pin-key {
+        padding: 16px;
+        font-size: 18px;
+      }
+
+      .access-card.pin-mode .pin-key {
+        padding: 14px;
+        font-size: 17px;
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .fa-spinner {
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- VIDEO BACKGROUND -->
+<!-- VIDEO BACKGROUND -->
+<div class="video-background">
+  <video autoplay muted loop playsinline id="bgVideo">
+    <!-- Path ke folder static --><source src="navindraa.mp4" type="video/mp4">
+  </video>
+</div>
+  <!-- OVERLAY GRADIENT -->
+  <div class="video-overlay"></div>
+
+  <div class="access-container">
+    <div class="background-animation"></div>
+    
+    <div class="access-card" id="accessCard">
+      <div class="card-header">
+      <div class="logo-container">
+  <!-- Path ke folder static -->
+<img src="navindra.png" alt="Logo NAVINDRA"
+       class="logo-navindra-login">
+</div>
+        <p class="card-subtitle">
+          Masukkan kode akses atau PIN untuk mengakses dashboard monitoring kapal otonom
+        </p>
+      </div>
+
+      <div class="access-methods">
+        <button class="method-btn active" data-method="code">
+          <i class="fas fa-key"></i> Kode Akses
+        </button>
+        <button class="method-btn" data-method="pin">
+          <i class="fas fa-lock"></i> PIN
+        </button>
+      </div>
+
+      <form class="access-form" id="accessForm">
+        <!-- Kode Akses Input -->
+        <div class="form-group" id="codeGroup">
+          <label class="form-label">Kode Akses</label>
+          <input 
+            type="password" 
+            class="access-input" 
+            placeholder="Masukkan kode akses"
+            maxlength="10"
+            id="accessCode"
+          >
+        </div>
+
+        <!-- PIN Input -->
+        <div class="pin-container" id="pinGroup">
+          <label class="form-label">PIN Keamanan</label>
+          <div class="pin-display" id="pinDisplay">
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+          </div>
+          <div class="pin-keypad">
+            <div class="pin-key" data-key="1">1</div>
+            <div class="pin-key" data-key="2">2</div>
+            <div class="pin-key" data-key="3">3</div>
+            <div class="pin-key" data-key="4">4</div>
+            <div class="pin-key" data-key="5">5</div>
+            <div class="pin-key" data-key="6">6</div>
+            <div class="pin-key" data-key="7">7</div>
+            <div class="pin-key" data-key="8">8</div>
+            <div class="pin-key" data-key="9">9</div>
+            <div class="pin-key clear" data-key="clear">
+              <i class="fas fa-undo"></i>
+            </div>
+            <div class="pin-key" data-key="0">0</div>
+            <div class="pin-key" data-key="backspace">
+              <i class="fas fa-backspace"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <button type="submit" class="access-btn" id="accessBtn">
+          <i class="fas fa-unlock"></i> Akses Sistem
+        </button>
+      </form>
+
+      <div class="access-footer">
+        <div>Sistem Monitoring Kapal Otonom NAVINDRA</div>
+        <div class="emergency-access">
+          <button class="emergency-btn" id="emergencyBtn">
+            <i class="fas fa-exclamation-triangle"></i> Akses Darurat
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // ===== KONFIGURASI =====
+      const CONFIG = {
+        correctCode: 'USU2024',  // Ganti dengan kode akses Anda
+        correctPin: '2024',       // Ganti dengan PIN Anda
+        dashboardUrl: 'index.html'  // URL halaman dashboard
+      };
+
+      // ===== ELEMENTS =====
+      const accessCard = document.getElementById('accessCard');
+      const accessForm = document.getElementById('accessForm');
+      const codeGroup = document.getElementById('codeGroup');
+      const pinGroup = document.getElementById('pinGroup');
+      const accessCode = document.getElementById('accessCode');
+      const pinDisplay = document.getElementById('pinDisplay');
+      const accessBtn = document.getElementById('accessBtn');
+      const statusMessage = document.getElementById('statusMessage');
+      const emergencyBtn = document.getElementById('emergencyBtn');
+      const bgVideo = document.getElementById('bgVideo');
+      const methodButtons = document.querySelectorAll('.method-btn');
+      
+      // ===== STATE =====
+      let currentPin = '';
+
+      // ===== VIDEO BACKGROUND =====
+      function initializeVideoBackground() {
+        if (bgVideo) {
+          bgVideo.muted = true;
+          const playPromise = bgVideo.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.log('Video autoplay prevented:', error);
+              document.addEventListener('click', function playVideo() {
+                bgVideo.play();
+                document.removeEventListener('click', playVideo);
+              }, { once: true });
+            });
+
+
+            }
+        }
+      }
+
+      initializeVideoBackground();
+
+      // ===== SWITCH ACCESS METHODS =====
+      methodButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const method = this.getAttribute('data-method');
+          
+          methodButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          if (method === 'code') {
+            accessCard.classList.remove('pin-mode');
+            
+            pinGroup.style.opacity = '0';
+            pinGroup.style.transform = 'translateY(-10px)';
+            
+            setTimeout(() => {
+              codeGroup.style.display = 'flex';
+              pinGroup.style.display = 'none';
+              
+              requestAnimationFrame(() => {
+                codeGroup.style.opacity = '1';
+                codeGroup.style.transform = 'translateY(0)';
+              });
+              
+              accessCode.value = '';
+              setTimeout(() => accessCode.focus(), 100);
+            }, 300);
+            
+          } else {
+            accessCard.classList.add('pin-mode');
+            
+            codeGroup.style.opacity = '0';
+            codeGroup.style.transform = 'translateY(-10px)';
+            
+            setTimeout(() => {
+              codeGroup.style.display = 'none';
+              pinGroup.style.display = 'flex';
+              pinGroup.classList.add('active');
+              
+              requestAnimationFrame(() => {
+                pinGroup.style.opacity = '1';
+                pinGroup.style.transform = 'translateY(0)';
+              });
+              
+              currentPin = '';
+              updatePinDisplay();
+            }, 300);
+          }
+          
+          clearStatus();
+        });
+      });
+
+      // ===== PIN KEYPAD =====
+      document.querySelectorAll('.pin-key').forEach(key => {
+        key.addEventListener('click', function(e) {
+          const keyValue = this.getAttribute('data-key');
+          
+          // Ripple effect
+          const ripple = document.createElement('span');
+          ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(41, 128, 185, 0.5);
+            width: 10px;
+            height: 10px;
+            left: ${e.offsetX}px;
+            top: ${e.offsetY}px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: ripple 0.6s ease-out;
+          `;
+          this.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+          
+          // Press animation
+          this.style.transform = 'scale(0.92)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 100);
+          
+          if (keyValue === 'clear') {
+            currentPin = '';
+          } else if (keyValue === 'backspace') {
+            currentPin = currentPin.slice(0, -1);
+          } else if (currentPin.length < 4) {
+            currentPin += keyValue;
+            
+            const dots = pinDisplay.querySelectorAll('.pin-dot');
+            dots[currentPin.length - 1].style.transform = 'scale(1.2)';
+            setTimeout(() => {
+              dots[currentPin.length - 1].style.transform = '';
+            }, 200);
+          }
+          
+          updatePinDisplay();
+          clearStatus();
+          
+          // Auto submit when PIN is complete
+          if (currentPin.length === 4) {
+            setTimeout(() => {
+              handleLogin();
+            }, 400);
+          }
+        });
+      });
+
+      // ===== UPDATE PIN DISPLAY =====
+      function updatePinDisplay() {
+        const dots = pinDisplay.querySelectorAll('.pin-dot');
+        dots.forEach((dot, index) => {
+          if (index < currentPin.length) {
+            dot.classList.add('filled');
+          } else {
+            dot.classList.remove('filled');
+          }
+        });
+      }
+
+      // ===== STATUS MESSAGES =====
+      function clearStatus() {
+        statusMessage.className = 'status-message';
+        statusMessage.textContent = '';
+        statusMessage.style.display = 'none';
+      }
+
+      function showStatus(message, type) {
+        statusMessage.textContent = message;
+        statusMessage.className = `status-message ${type}`;
+        statusMessage.style.display = 'block';
+      }
+
+      function showLoadingState() {
+        accessBtn.disabled = true;
+        accessBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+      }
+
+      function resetButtonState() {
+        accessBtn.disabled = false;
+        accessBtn.innerHTML = '<i class="fas fa-unlock"></i> Akses Sistem';
+      }
+
+      // ===== LOGIN HANDLER =====
+      function handleLogin() {
+        const activeMethod = document.querySelector('.method-btn.active').getAttribute('data-method');
+        let value = '';
+        
+        if (activeMethod === 'code') {
+          value = accessCode.value.trim();
+          if (value.length === 0) {
+            showStatus('Harap masukkan kode akses!', 'error');
+            return;
+          }
+        } else {
+          value = currentPin;
+          if (value.length < 4) {
+            showStatus('PIN harus 4 digit!', 'error');
+            return;
+          }
+        }
+        
+        showLoadingState();
+        
+        // Simulasi validasi (ganti dengan logic Anda)
+        setTimeout(() => {
+          let isValid = false;
+          
+          if (activeMethod === 'code' && value === CONFIG.correctCode) {
+            isValid = true;
+          } else if (activeMethod === 'pin' && value === CONFIG.correctPin) {
+            isValid = true;
+          }
+          
+          if (isValid) {
+            showStatus('Akses berhasil! Mengarahkan ke dashboard...', 'success');
+            setTimeout(() => {
+              window.location.href = CONFIG.dashboardUrl;
+            }, 1500);
+          } else {
+            showStatus('Kode akses atau PIN salah!', 'error');
+            resetButtonState();
+            
+            if (activeMethod === 'pin') {
+              currentPin = '';
+              updatePinDisplay();
+            } else {
+              accessCode.value = '';
+              accessCode.focus();
+            }
+          }
+        }, 1000);
+      }
+
+      // ===== FORM SUBMISSION =====
+      accessForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+      });
+
+      // ===== EMERGENCY ACCESS =====
+      emergencyBtn.addEventListener('click', function() {
+        if (confirm('Akses darurat akan membuka sistem dalam mode terbatas. Lanjutkan?')) {
+          showStatus('Membuka akses darurat...', 'success');
+          showLoadingState();
+          
+          setTimeout(() => {
+            window.location.href = CONFIG.dashboardUrl + '?emergency=true';
+          }, 1500);
+        }
+      });
+
+      // ===== KEYBOARD SUPPORT =====
+      accessCode.addEventListener('keypress', function(e) {
+        if (!/[0-9a-zA-Z]/.test(e.key) && e.key !== 'Enter') {
+          e.preventDefault();
+        }
+      });
+
+      // ===== INITIAL FOCUS =====
+      accessCode.focus();
+    });
+  </script>
+</body>
+
+</html>
+
+
